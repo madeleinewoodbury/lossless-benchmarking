@@ -4,7 +4,7 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [compressions, setCompressions] = useState([]);
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState([]);
 
   useEffect(() => {
     fetchCompressions()
@@ -13,7 +13,6 @@ export const AppProvider = ({ children }) => {
   const fetchCompressions = async () => {
     try {
       const res = await fetch('/api/compressions')
-      console.log(res.ok)
       if(res.ok) {
         const data = await res.json()
         setCompressions(data)
@@ -26,7 +25,7 @@ export const AppProvider = ({ children }) => {
   }
 
   const compressFile = async (file, id = null) => {
-    setResult(null) // Reset the result state
+    setResult([]) // Reset the result state
   
     if (id) {
       await runSingleCompression(file, id)
@@ -51,10 +50,7 @@ export const AppProvider = ({ children }) => {
   
       if (res.ok) {
         const data = await res.json()
-        setResult(prevResult => ({
-          ...prevResult,
-          [id]: data
-        }))
+        setResult(prevResult => [...prevResult, data])
       } else {
         console.log('File upload failed', res.statusText)
       }
@@ -64,10 +60,7 @@ export const AppProvider = ({ children }) => {
     }
   }
   
-
   
-
-
   return (
     <AppContext.Provider
       value={{
