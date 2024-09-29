@@ -16,17 +16,19 @@ const ResultTable = () => {
    })
   }
 
+  if(result.length === 0) return null;
 
-  return result && (
+
+  return (
     <div className="flex flex-col items-center justify-center mt-8">
       <div className="w-full max-w-6xl">
         <table className="table-auto w-full border-collapse bg-slate-950 shadow-lg rounded-lg">
           <thead>
             <tr className="bg-slate-700 text-gray-100 uppercase text-sm leading-normal">
               <th className="py-3 px-6 text-left">Technique</th>
-              <th className="py-3 px-6 text-left">Time Elapsed</th>
-              <th className="py-3 px-6 text-left">Size</th>
-              <th className="py-3 px-6 text-left">Memory</th>
+              <th className="hidden py-3 px-6 text-lef md:inline-block">Time Elapsed</th>
+              <th className="hidden py-3 px-6 text-left md:inline-block">Size</th>
+              <th className="hidden py-3 px-6 text-left md:inline-block">Memory</th>
               <th className="py-3 px-6 text-center"></th>
             </tr>
           </thead>
@@ -34,16 +36,17 @@ const ResultTable = () => {
             {result.map((data, index) => (
               <tr key={index} className="border-b border-gray-200 cursor-pointer hover:bg-slate-900">
                 <td className="py-3 px-6 text-left whitespace-nowrap">
-                  <span className="font-medium">{data.technique}</span>
+                  <span className="hidden font-medium sm:inline-block">{data.technique}</span>
+                  <span className="font-medium sm:hidden">{data.short_name}</span>
                 </td>
-                <td className="py-3 px-6 text-left">
+                <td className="hidden py-3 px-6 text-left md:inline-block">
                   {data.time.elapsed.toFixed(3)} {data.time.unit}
                 </td>
-                <td className="py-3 px-6 text-left">
+                <td className="hidden py-3 px-6 text-left md:inline-block">
                   {data.size.after.toFixed(3)} {data.size.unit}
                 </td>
-                <td className="py-3 px-6 text-left">
-                  {data.memory.usage} {data.memory.unit}
+                <td className="hidden py-3 px-6 text-left md:inline-block">
+                  {data.memory.usage == 0 ? 'N/A' : `${data.memory.usage} ${data.memory.unit}`} 
                 </td>
                 <td className="py-3 px-6 text-center">
                   <button
